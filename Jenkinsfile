@@ -1,7 +1,12 @@
 pipeline {
   agent any
+
   environment {
     MAJOR_VERSION = '1'
+  }
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '2',IartifactNumToKeeoStr: '1'))
   }
 
   stages {
