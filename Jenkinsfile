@@ -6,7 +6,7 @@ pipeline {
   }
 
   options {
-    buildDiscarder(logRotator(numToKeepStr: '2',IartifactNumToKeeoStr: '1'))
+    buildDiscarder(logRotator(numToKeepStr: '2',IartifactNumToKeepStr: '1'))
   }
 
   stages {
