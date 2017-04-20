@@ -22,6 +22,11 @@ pipeline {
       steps {
         sh 'ant -f build.xml -v'
       }
+      post {
+        success {
+          archiveArtifacts artifacts: "dist/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar", fingerprint: true
+        }
+      }
     }
     stage('deploy') {
       agent {
@@ -39,15 +44,6 @@ pipeline {
         sh "wget http://spawnoflard1.mylabserver.com/rectangles/all/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar"
         sh "java -jar rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar 6 9"
       }
-    }
-  }
-
-  post {
-    agent {
-      label 'apache'
-    }
-    always {
-      archiveArtifacts artifacts: "dist/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar", fingerprint: true
     }
   }
 }
