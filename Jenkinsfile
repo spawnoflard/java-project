@@ -54,5 +54,10 @@ pipeline {
         sh "java -jar rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar 60 20"
       }
     }
+    stage('Promote to Green') {
+      steps {
+        sh "cp /var/www/html/rectangles/all/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar /var/www/html/rectangles/green/"
+      }
+    }
   }
 }
