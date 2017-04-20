@@ -37,7 +37,7 @@ pipeline {
         sh "cp dist/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar /var/www/html/rectangles/all/${env.MAJOR_VERSION}_${env.BUILD_NUMBER}"
       }
     }
-    stage('Running on Centos'){
+    stage('Running on Centos') {
       agent {
         label 'CentOS'
       }
@@ -56,34 +56,35 @@ pipeline {
       }
     }
     stage('Promote Branch to Master') {
-    agent {
-      label 'apache'
+      agent {
+        label 'apache'
+      }
+      when {
+        branch 'development'
+      }
+      steps {
+        echo 'Stash Any Local Changes'
+        sh 'git stash'
+        echo 'Checking Out Development Branch'
+        sh 'git checkout development'
+        echo 'Checking Out the Master Branch'
+        sh 'git checkout master'
+        echo 'Merging development to master'
+        sh 'git merge development'
+        echo 'Pushing to Origin Master'
+        sh 'git push origin master'
+      }
     }
-    when {
-      branch 'development'
-    }
-    steps {
-      echo 'Stash Any Local Changes'
-      sh 'git stash'
-      echo 'Checking Out Development Branch'
-      sh 'git checkout development'
-      echo 'Checking Out the Master Branch'
-      sh 'git checkout master'
-      echo 'Merging development to master'
-      sh 'git merge development'
-      echo 'Pushing to Origin Master'
-      sh 'git push origin master'
-    }
-  }
-  stage('Promote to Green') {
-    agent {
-      label 'apache'
-    }
-    when {
-      branch 'master'
-    }
-    steps {
-      sh "cp /var/www/html/rectangles/all/${env.MAJOR_VERSION}_${env.BUILD_NUMBER}/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar /var/www/html/rectangles/green/"
+    stage('Promote to Green') {
+      agent {
+        label 'apache'
+      }
+      when {
+        branch 'master'
+      }
+      steps {
+        sh "cp /var/www/html/rectangles/all/${env.MAJOR_VERSION}_${env.BUILD_NUMBER}/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar /var/www/html/rectangles/green/"
+      }
     }
   }
 }
