@@ -32,6 +32,9 @@ pipeline {
       agent {
         label 'apache'
       }
+      when {
+        branch 'development'
+      }
       steps {
         sh "mkdir /var/www/html/rectangles/all/${env.MAJOR_VERSION}_${env.BUILD_NUMBER}"
         sh "cp dist/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar /var/www/html/rectangles/all/${env.MAJOR_VERSION}_${env.BUILD_NUMBER}"
