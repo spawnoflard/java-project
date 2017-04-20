@@ -44,7 +44,7 @@ pipeline {
 
   post {
     always {
-      archiveArtifacts artifacts: 'dist/*.jar', fingerprint: true
+      archiveArtifacts artifacts: "dist/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar", fingerprint: true
     }
   }
 }
