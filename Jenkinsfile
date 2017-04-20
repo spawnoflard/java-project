@@ -43,6 +43,9 @@ pipeline {
   }
 
   post {
+    agent {
+      label 'apache'
+    }
     always {
       archiveArtifacts artifacts: "dist/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar", fingerprint: true
     }
