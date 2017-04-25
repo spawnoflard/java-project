@@ -93,5 +93,23 @@ pipeline {
         sh "cp /var/www/html/rectangles/all/${env.MAJOR_VERSION}_${env.BUILD_NUMBER}/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar /var/www/html/rectangles/green/"
       }
     }
+    post {
+      failure {
+        emailext(
+          subject: "${env.JOB_NAME} [${env.BUILD_NUMBER}] Failed!",
+          body: """<p>''${env.JOB_NAME} [${env.BUILD_NUMBER}]' Failed!":</p>
+          <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QuOT;</p>""",
+          to: steven.briggs69@gmail.com
+        )
+      }
+      success {
+        emailext(
+          subject: "${env.JOB_NAME} [${env.BUILD_NUMBER}] Development Promoted to Master!",
+          body: """<p>''${env.JOB_NAME} [${env.BUILD_NUMBER}]' Success! Development Promoted to Master":</p>
+          <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QuOT;</p>""",
+          to: steven.briggs69@gmail.com
+        )
+      }
+    }
   }
 }
